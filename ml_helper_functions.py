@@ -31,10 +31,13 @@ def grid_view_img_data_gen(batch_imgs, class_names = [], row = 2, col = 2, figsi
   """
   Display random images with labels in a grid form for
   every batch created using ImageDataGenerator.
+
+  batch_imgs: It is one batch, can be obtained using
+  batch_imgs.next() or batch_imgs.take(1) etc.
   """
 
   # calling next on image data will return images equal to batch we have assigned
-  imgs, labels = batch_imgs.next()
+  imgs, labels = batch_imgs
 
   plt.figure()
   f, axarr = plt.subplots(row,col,figsize=figsize) 
