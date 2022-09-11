@@ -26,7 +26,7 @@ def get_file_names(dir_path):
 
 import random
 
-def grid_view_img_data_gen(batch_imgs, class_names = [], row = 2, col = 2, figsize=(8,8)):
+def grid_view_img_data_gen(batch_imgs, take_num, class_names = [], row = 2, col = 2, figsize=(8,8)):
 
   """
   Display random images with labels in a grid form for
@@ -34,7 +34,11 @@ def grid_view_img_data_gen(batch_imgs, class_names = [], row = 2, col = 2, figsi
   """
 
   # calling next on image data will return images equal to batch we have assigned
-  imgs, labels = batch_imgs.next()
+  
+  if(take_num):
+    imgs, labels = batch_imgs.take(take_num)
+  else:
+    imgs, labels = batch_imgs.next()
 
   plt.figure()
   f, axarr = plt.subplots(row,col,figsize=figsize) 
