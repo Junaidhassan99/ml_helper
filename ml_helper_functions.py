@@ -26,15 +26,12 @@ def get_file_names(dir_path):
 
 import random
 
-def grid_view_img_data_gen(batch_imgs, class_names = [], row = 2, col = 2, figsize=(8,8)):
+def grid_view_img_data_gen(imgs, labels, class_names = [], row = 2, col = 2, figsize=(8,8)):
 
   """
-  Display random images with labels in a grid form for
-  every batch created using ImageDataGenerator.
+  Display random images with labels in a grid form
+  from given list of images and respective labels
   """
-
-  # calling next on image data will return images equal to batch we have assigned
-  imgs, labels = batch_imgs.next()
 
   plt.figure()
   f, axarr = plt.subplots(row,col,figsize=figsize) 
@@ -49,28 +46,6 @@ def grid_view_img_data_gen(batch_imgs, class_names = [], row = 2, col = 2, figsi
       else:
         axarr[i,j].set_title(int(labels[img_index]))
         
-def grid_view_img_from_dir(batch_imgs, take_num, class_names = [], row = 2, col = 2, figsize=(8,8)):
-
-  """
-  Display random images with labels in a grid form for
-  a given batch created using image_dataset_from_directory.
-  """
-
-  # calling next on image data will return images equal to batch we have assigned
-  imgs, labels = batch_imgs.take(take_num)
-
-  plt.figure()
-  f, axarr = plt.subplots(row,col,figsize=figsize) 
-
-  for i in range(row):
-    for j in range(col):
-      img_index=random.randint(0, len(imgs)-1)
-      axarr[i,j].imshow(imgs[img_index], cmap='gray', vmin=0, vmax=255)
-
-      if class_names != []:
-        axarr[i,j].set_title(class_names[int(labels[img_index])])
-      else:
-        axarr[i,j].set_title(int(labels[img_index]))
 
 import datetime
 
