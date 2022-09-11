@@ -21,25 +21,59 @@ def get_file_names(dir_path):
   It will return a list of file names from a directory,
   for example getting class names from directory
   """
-
+ 
   return sorted(os.listdir(dir_path))
 
 import random
 
 def grid_view_img_data_gen(batch_imgs, class_names = [], row = 2, col = 2, figsize=(8,8)):
 
+  """
+  Display random images with labels in a grid form for
+  every batch created using ImageDataGenerator.
+  """
+
   # calling next on image data will return images equal to batch we have assigned
   imgs, labels = batch_imgs.next()
 
   plt.figure()
-  f, axarr = plt.subplots(row,col,figsize=figsize)
+  f, axarr = plt.subplots(row,col,figsize) 
 
   for i in range(row):
     for j in range(col):
       img_index=random.randint(0, len(imgs)-1)
       axarr[i,j].imshow(imgs[img_index], cmap='gray', vmin=0, vmax=255)
 
-      if class_names != []:
+      if class_names == []:
         axarr[i,j].set_title(class_names[int(labels[img_index])])
       else:
         axarr[i,j].set_title(int(labels[img_index]))
+
+import datetime
+
+def create_tensorboard_callback(dir_name, experiment_name):
+
+  """
+  Create a Tensorboard callback with a file name having
+  directory name, experiment name and datetime of creation
+  to saves logs of model training
+  """
+
+  # the place where we want to save performace logs
+  log_dir = dir_name +'/' + experiment_name + '/' + datetime.datetime.now().strftime('%Y%m%d-%H%M%S')
+
+  return tf.keras.callbacks.TensorBoard(log_dir = log_dir)
+
+def plot_loss_curve(model_fit):
+
+  """
+  It will plot a graph with loss and accuracy on vertical
+  and epochs on horizontal axis
+
+  model_fit: an object returned by fit function of tensorflow
+  """
+
+  pd.DataFrame(model_fit.history).plot()
+
+  plt.ylabel('metrices')
+  plt.xlabel('epochs')
