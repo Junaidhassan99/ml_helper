@@ -31,6 +31,12 @@ def grid_view_img_data(imgs, labels, class_names = [], row = 2, col = 2, figsize
   """
   Display random images with labels in a grid form
   from given list of images and respective labels
+  
+  imgs: must be normalized (1/225.)
+  
+  example 1:
+  for imgs, labels in train_data.take(1):
+    grid_view_img_data(imgs/255.,labels)
   """
 
   plt.figure()
