@@ -26,7 +26,7 @@ def get_file_names(dir_path):
 
 import random
 
-def grid_view_img_data_gen(imgs, labels, class_names = [], row = 2, col = 2, figsize=(8,8)):
+def grid_view_img_data(imgs, labels, class_names = [], row = 2, col = 2, figsize=(8,8)):
 
   """
   Display random images with labels in a grid form
