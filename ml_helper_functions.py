@@ -141,4 +141,4 @@ def pretty_confusion_matrix(y_true, y_pred,figsize=(5, 5), classes = None, text_
     plt.text(j, i, f"{cm[i, j]} ({cm_norm[i, j]*100:.1f}%)",
              horizontalalignment="center",
              color="white" if cm[i, j] > threshold else "black",
-             size=15)
+             size=text_size)
