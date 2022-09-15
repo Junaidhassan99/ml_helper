@@ -21,7 +21,7 @@ def get_file_names(dir_path):
   It will return a list of file names from a directory,
   for example getting class names from directory
   """
- 
+
   return sorted(os.listdir(dir_path))
 
 import random
@@ -31,16 +31,16 @@ def grid_view_img_data(imgs, labels, class_names = [], row = 2, col = 2, figsize
   """
   Display random images with labels in a grid form
   from given list of images and respective labels
-  
+
   imgs: must be normalized (1/225.)
-  
+
   example 1:
   for imgs, labels in train_data.take(1):
     grid_view_img_data(imgs/255.,labels)
   """
 
   plt.figure()
-  f, axarr = plt.subplots(row,col,figsize=figsize) 
+  f, axarr = plt.subplots(row,col,figsize=figsize)
 
   for i in range(row):
     for j in range(col):
@@ -51,7 +51,7 @@ def grid_view_img_data(imgs, labels, class_names = [], row = 2, col = 2, figsize
         axarr[i,j].set_title(class_names[int(labels[img_index])])
       else:
         axarr[i,j].set_title(int(labels[img_index]))
-        
+
 
 import datetime
 
@@ -81,3 +81,64 @@ def plot_loss_curve(model_fit):
 
   plt.ylabel('metrices')
   plt.xlabel('epochs')
+
+
+import itertools
+from sklearn.metrics import confusion_matrix
+
+def pretty_confusion_matrix(y_true, y_pred,figsize=(5, 5), classes = None, text_size=20):
+
+  """
+  Note: The following confusion matrix code is a remix of Scikit-Learn's
+  plot_confusion_matrix function - https://scikit-learn.org/stable/modules/generated/sklearn.metrics.plot_confusion_matrix.html
+  and Made with ML's introductory notebook - https://github.com/GokuMohandas/MadeWithML/blob/main/notebooks/08_Neural_Networks.ipynb
+  """
+
+  y_test=y_true
+  y_preds=y_pred
+
+  # figsize = (5, 5)
+
+  # Create the confusion matrix
+  cm = confusion_matrix(y_test, y_preds)
+  cm_norm = cm.astype("float") / cm.sum(axis=1)[:, np.newaxis] # normalize it
+  n_classes = cm.shape[0]
+
+  # Let's prettify it
+  fig, ax = plt.subplots(figsize=figsize)
+  # Create a matrix plot
+  cax = ax.matshow(cm, cmap=plt.cm.Blues) # https://matplotlib.org/3.2.0/api/_as_gen/matplotlib.axes.Axes.matshow.html
+  fig.colorbar(cax)
+
+  if classes:
+    labels = classes
+  else:
+    labels = np.arange(cm.shape[0])
+
+  # Label the axes
+  ax.set(title="Confusion Matrix",
+         xlabel="Predicted label",
+         ylabel="True label",
+         xticks=np.arange(n_classes),
+         yticks=np.arange(n_classes),
+         xticklabels=labels,
+         yticklabels=labels)
+
+  # Set x-axis labels to bottom
+  ax.xaxis.set_label_position("bottom")
+  ax.xaxis.tick_bottom()
+
+  # Adjust label size
+  ax.xaxis.label.set_size(text_size)
+  ax.yaxis.label.set_size(text_size)
+  ax.title.set_size(text_size)
+
+  # Set threshold for different colors
+  threshold = (cm.max() + cm.min()) / 2.
+
+  # Plot the text on each cell
+  for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
+    plt.text(j, i, f"{cm[i, j]} ({cm_norm[i, j]*100:.1f}%)",
+             horizontalalignment="center",
+             color="white" if cm[i, j] > threshold else "black",
+             size=15)
