@@ -86,7 +86,7 @@ def plot_loss_curve(model_fit):
 import itertools
 from sklearn.metrics import confusion_matrix
 
-def pretty_confusion_matrix(y_true, y_pred,figsize=(5, 5), classes = None, text_size=20):
+def matplotlib_confusion_matrix(y_true, y_pred,figsize=(5, 5), class_names = None, text_size=20):
 
   """
   Note: The following confusion matrix code is a remix of Scikit-Learn's
@@ -110,8 +110,8 @@ def pretty_confusion_matrix(y_true, y_pred,figsize=(5, 5), classes = None, text_
   cax = ax.matshow(cm, cmap=plt.cm.Blues) # https://matplotlib.org/3.2.0/api/_as_gen/matplotlib.axes.Axes.matshow.html
   fig.colorbar(cax)
 
-  if classes:
-    labels = classes
+  if class_names:
+    labels = class_names
   else:
     labels = np.arange(cm.shape[0])
 
@@ -142,3 +142,20 @@ def pretty_confusion_matrix(y_true, y_pred,figsize=(5, 5), classes = None, text_
              horizontalalignment="center",
              color="white" if cm[i, j] > threshold else "black",
              size=text_size)
+
+import seaborn as sns
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.metrics import confusion_matrix
+
+def sns_confusion_matrix(Y_true, Y_pred, figsize=(5, 5), class_names = None, label_size=1.4, text_size=16):
+
+  cm = confusion_matrix(Y_true, Y_pred)
+  # Normalise
+  cmn = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
+  fig, ax = plt.subplots(figsize=figsize)
+  sns.set(font_scale=label_size) # for label size
+  sns.heatmap(cmn, annot=True, fmt='.2f', annot_kws={"size": text_size}, xticklabels=class_names, yticklabels=class_names)
+  plt.ylabel('Actual')
+  plt.xlabel('Predicted')
+  plt.show(block=False)
