@@ -152,7 +152,7 @@ def sns_confusion_matrix(Y_true, Y_pred, figsize=(5, 5), class_names = None, lab
 
   cm = confusion_matrix(Y_true, Y_pred)
   # Normalise
-  cmn = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
+  cmn = (cm.astype('float') / cm.sum(axis=1)[:, np.newaxis])*100
   fig, ax = plt.subplots(figsize=figsize)
   sns.set(font_scale=label_size) # for label size
   sns.heatmap(cmn, annot=True, fmt='.2f', annot_kws={"size": text_size}, xticklabels=class_names, yticklabels=class_names)
