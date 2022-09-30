@@ -159,3 +159,27 @@ def sns_confusion_matrix(Y_true, Y_pred, figsize=(5, 5), class_names = None, lab
   plt.ylabel('Actual')
   plt.xlabel('Predicted')
   plt.show(block=False)
+
+
+# Calculate the time of predictions
+import time
+def pred_timer(model, samples):
+  """
+  Times how long a model takes to make predictions on samples.
+  
+  Args:
+  ----
+  model = a trained model
+  sample = a list of samples
+
+  Returns:
+  ----
+  total_time = total elapsed time for model to make predictions on samples
+  time_per_pred = time in seconds per single sample
+  """
+  start_time = time.perf_counter() # get start time
+  model.predict(samples) # make predictions
+  end_time = time.perf_counter() # get finish time
+  total_time = end_time-start_time # calculate how long predictions took to make
+  time_per_pred = total_time/len(samples) # find prediction time per sample
+  return total_time, time_per_pred
