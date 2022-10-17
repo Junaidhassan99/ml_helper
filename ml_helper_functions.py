@@ -184,30 +184,3 @@ def pred_timer(model, samples):
   time_per_pred = total_time/len(samples) # find prediction time per sample
   return total_time, time_per_pred
 
-
-def time_series_window_horizon_split(list_a, window_size, horizon_size):
-
-  """
-  Takes a time series, divides it into equal chuncks of 
-  (window_size + horizon_size), then further splits each
-  chunk into windows and horizons and return them separately
-  as numpy arrays 
-  """
-
-  def split(list_a, chunk_size):
-
-    for i in range(0, len(list_a), chunk_size):
-      yield list_a[i:i + chunk_size]
-
-  chunk_size = window_size + horizon_size
-  split_array = list(split(list_a, chunk_size))
-
-  if split_array[0].shape != split_array[-1].shape:
-    split_array = np.stack(split_array[:-1], axis=0)
-  else:
-    split_array = np.stack(split_array, axis=0)
-
-  windows = [i[:-1] for i in split_array]
-  horizons = [i[-1] for i in split_array]
-
-  return np.array(windows), np.array(horizons)
